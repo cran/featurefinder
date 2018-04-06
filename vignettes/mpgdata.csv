@@ -1,0 +1,118 @@
+"manufacturer","model","displ","year","cyl","trans","drv","y","hwy","fl","class","transfactor","expected","actual","residual"
+"hyundai","tiburon",2,2008,4,"manual(m5)","f",20,28,"r","subcompact","transmanual(m5)",19.8519281643602,20,0.148071835639769
+"hyundai","tiburon",2,2008,4,"auto(l4)","f",20,27,"r","subcompact","transauto(l4)",19.8519281643602,20,0.148071835639769
+"hyundai","tiburon",2.7,2008,6,"auto(l4)","f",17,24,"r","subcompact","transauto(l4)",18.038665686648,17,-1.03866568664799
+"hyundai","tiburon",2.7,2008,6,"manual(m6)","f",16,24,"r","subcompact","transmanual(m6)",18.038665686648,16,-2.03866568664799
+"hyundai","tiburon",2.7,2008,6,"manual(m5)","f",17,24,"r","subcompact","transmanual(m5)",18.038665686648,17,-1.03866568664799
+"jeep","grand cherokee 4wd",3,2008,6,"auto(l5)","4",17,22,"d","suv","transauto(l5)",17.2615531961999,17,-0.261553196199884
+"jeep","grand cherokee 4wd",3.7,2008,6,"auto(l5)","4",15,19,"r","suv","transauto(l5)",15.4482907184876,15,-0.448290718487641
+"jeep","grand cherokee 4wd",4,1999,6,"auto(l4)","4",15,20,"r","suv","transauto(l4)",13.8721837201995,15,1.12781627980053
+"jeep","grand cherokee 4wd",4.7,1999,8,"auto(l4)","4",14,17,"r","suv","transauto(l4)",12.0589212424872,14,1.94107875751277
+"jeep","grand cherokee 4wd",4.7,2008,8,"auto(l5)","4",9,12,"e","suv","transauto(l5)",12.8579157503273,9,-3.85791575032732
+"jeep","grand cherokee 4wd",4.7,2008,8,"auto(l5)","4",14,19,"r","suv","transauto(l5)",12.8579157503273,14,1.14208424967268
+"jeep","grand cherokee 4wd",5.7,2008,8,"auto(l5)","4",13,18,"r","suv","transauto(l5)",10.267540782167,13,2.73245921783302
+"jeep","grand cherokee 4wd",6.1,2008,8,"auto(l5)","4",11,14,"p","suv","transauto(l5)",9.23139079490286,11,1.76860920509714
+"land rover","range rover",4,1999,8,"auto(l4)","4",11,15,"p","suv","transauto(l4)",13.8721837201995,11,-2.87218372019947
+"land rover","range rover",4.2,2008,8,"auto(s6)","4",12,18,"r","suv","transauto(s6)",14.1531032344075,12,-2.1531032344075
+"land rover","range rover",4.4,2008,8,"auto(s6)","4",12,18,"r","suv","transauto(s6)",13.6350282407754,12,-1.63502824077543
+"land rover","range rover",4.6,1999,8,"auto(l4)","4",11,15,"p","suv","transauto(l4)",12.3179587393033,11,-1.31795873930326
+"lincoln","navigator 2wd",5.4,1999,8,"auto(l4)","r",11,17,"r","suv","transauto(l4)",10.245658764775,11,0.754341235225013
+"lincoln","navigator 2wd",5.4,1999,8,"auto(l4)","r",11,16,"p","suv","transauto(l4)",10.245658764775,11,0.754341235225013
+"lincoln","navigator 2wd",5.4,2008,8,"auto(l6)","r",12,18,"r","suv","transauto(l6)",11.0446532726151,12,0.955346727384921
+"mercury","mountaineer 4wd",4,1999,6,"auto(l5)","4",14,17,"r","suv","transauto(l5)",13.8721837201995,14,0.127816279800527
+"mercury","mountaineer 4wd",4,2008,6,"auto(l5)","4",13,19,"r","suv","transauto(l5)",14.6711782280396,13,-1.67117822803957
+"mercury","mountaineer 4wd",4.6,2008,8,"auto(l6)","4",13,19,"r","suv","transauto(l6)",13.1169532471434,13,-0.116953247143357
+"mercury","mountaineer 4wd",5,1999,8,"auto(l4)","4",13,17,"r","suv","transauto(l4)",11.2818087520391,13,1.71819124796087
+"nissan","altima",2.4,1999,4,"manual(m5)","f",21,29,"r","compact","transmanual(m5)",19.8983288911786,21,1.10167110882139
+"nissan","altima",2.4,1999,4,"auto(l4)","f",19,27,"r","compact","transauto(l4)",19.8983288911786,19,-0.898328891178608
+"nissan","altima",2.5,2008,4,"auto(av)","f",23,31,"r","midsize","transauto(av)",20.4382859022027,23,2.56171409779733
+"nissan","altima",2.5,2008,4,"manual(m6)","f",23,32,"r","midsize","transmanual(m6)",20.4382859022027,23,2.56171409779733
+"nissan","altima",3.5,2008,6,"manual(m6)","f",19,27,"p","midsize","transmanual(m6)",17.8479109340423,19,1.15208906595768
+"nissan","altima",3.5,2008,6,"auto(av)","f",19,26,"p","midsize","transauto(av)",17.8479109340423,19,1.15208906595768
+"nissan","maxima",3,1999,6,"auto(l4)","f",18,26,"r","midsize","transauto(l4)",18.3441039102824,18,-0.344103910282399
+"nissan","maxima",3,1999,6,"manual(m5)","f",19,25,"r","midsize","transmanual(m5)",18.3441039102824,19,0.655896089717601
+"nissan","maxima",3.5,2008,6,"auto(av)","f",19,25,"p","midsize","transauto(av)",17.8479109340423,19,1.15208906595768
+"nissan","pathfinder 4wd",3.3,1999,6,"auto(l4)","4",14,17,"r","suv","transauto(l4)",17.5669914198343,14,-3.5669914198343
+"nissan","pathfinder 4wd",3.3,1999,6,"manual(m5)","4",15,17,"r","suv","transmanual(m5)",17.5669914198343,15,-2.5669914198343
+"nissan","pathfinder 4wd",4,2008,6,"auto(l5)","4",14,20,"p","suv","transauto(l5)",16.5527234499622,14,-2.55272344996217
+"nissan","pathfinder 4wd",5.6,2008,8,"auto(s5)","4",12,18,"p","suv","transauto(s5)",12.4081235009056,12,-0.408123500905617
+"pontiac","grand prix",3.1,1999,6,"auto(l4)","f",18,26,"r","midsize","transauto(l4)",18.9081246694811,18,-0.90812466948114
+"pontiac","grand prix",3.8,1999,6,"auto(l4)","f",16,26,"p","midsize","transauto(l4)",17.0948621917689,16,-1.09486219176893
+"pontiac","grand prix",3.8,1999,6,"auto(l4)","f",17,27,"r","midsize","transauto(l4)",17.0948621917689,17,-0.0948621917689252
+"pontiac","grand prix",3.8,2008,6,"auto(l4)","f",18,28,"r","midsize","transauto(l4)",17.893856699609,18,0.106143300390983
+"pontiac","grand prix",5.3,2008,8,"auto(s4)","f",16,25,"p","midsize","transauto(s4)",14.0082942473685,16,1.9917057526315
+"subaru","forester awd",2.5,1999,4,"manual(m5)","4",18,25,"r","suv","transmanual(m5)",17.75774617244,18,0.242253827560035
+"subaru","forester awd",2.5,1999,4,"auto(l4)","4",18,24,"r","suv","transauto(l4)",17.75774617244,18,0.242253827560035
+"subaru","forester awd",2.5,2008,4,"manual(m5)","4",20,27,"r","suv","transmanual(m5)",18.5567406802801,20,1.44325931971994
+"subaru","forester awd",2.5,2008,4,"manual(m5)","4",19,25,"p","suv","transmanual(m5)",18.5567406802801,19,0.443259319719942
+"subaru","forester awd",2.5,2008,4,"auto(l4)","4",20,26,"r","suv","transauto(l4)",18.5567406802801,20,1.44325931971994
+"subaru","forester awd",2.5,2008,4,"auto(l4)","4",18,23,"p","suv","transauto(l4)",18.5567406802801,18,-0.556740680280058
+"subaru","impreza awd",2.2,1999,4,"auto(l4)","4",21,26,"r","subcompact","transauto(l4)",18.5348586628881,21,2.46514133711193
+"subaru","impreza awd",2.2,1999,4,"manual(m5)","4",19,26,"r","subcompact","transmanual(m5)",18.5348586628881,19,0.46514133711193
+"subaru","impreza awd",2.5,1999,4,"manual(m5)","4",19,26,"r","subcompact","transmanual(m5)",17.75774617244,19,1.24225382756003
+"subaru","impreza awd",2.5,1999,4,"auto(l4)","4",19,26,"r","subcompact","transauto(l4)",17.75774617244,19,1.24225382756003
+"subaru","impreza awd",2.5,2008,4,"auto(s4)","4",20,25,"p","compact","transauto(s4)",18.5567406802801,20,1.44325931971994
+"subaru","impreza awd",2.5,2008,4,"auto(s4)","4",20,27,"r","compact","transauto(s4)",18.5567406802801,20,1.44325931971994
+"subaru","impreza awd",2.5,2008,4,"manual(m5)","4",19,25,"p","compact","transmanual(m5)",18.5567406802801,19,0.443259319719942
+"subaru","impreza awd",2.5,2008,4,"manual(m5)","4",20,27,"r","compact","transmanual(m5)",18.5567406802801,20,1.44325931971994
+"toyota","4runner 4wd",2.7,1999,4,"manual(m5)","4",15,20,"r","suv","transmanual(m5)",18.8556265181292,15,-3.85562651812921
+"toyota","4runner 4wd",2.7,1999,4,"auto(l4)","4",16,20,"r","suv","transauto(l4)",18.8556265181292,16,-2.85562651812921
+"toyota","4runner 4wd",3.4,1999,6,"auto(l4)","4",15,19,"r","suv","transauto(l4)",17.042364040417,15,-2.04236404041697
+"toyota","4runner 4wd",3.4,1999,6,"manual(m5)","4",15,17,"r","suv","transmanual(m5)",17.042364040417,15,-2.04236404041697
+"toyota","4runner 4wd",4,2008,6,"auto(l5)","4",16,20,"r","suv","transauto(l5)",16.2871335673609,16,-0.287133567360883
+"toyota","4runner 4wd",4.7,2008,8,"auto(l5)","4",14,17,"r","suv","transauto(l5)",14.4738710896486,14,-0.47387108964864
+"toyota","camry",2.2,1999,4,"manual(m5)","f",21,29,"r","midsize","transmanual(m5)",20.1508140022094,21,0.849185997790613
+"toyota","camry",2.2,1999,4,"auto(l4)","f",21,27,"r","midsize","transauto(l4)",20.1508140022094,21,0.849185997790613
+"toyota","camry",2.4,2008,4,"manual(m5)","f",21,31,"r","midsize","transmanual(m5)",20.4317335164174,21,0.56826648358259
+"toyota","camry",2.4,2008,4,"auto(l5)","f",21,31,"r","midsize","transauto(l5)",20.4317335164174,21,0.56826648358259
+"toyota","camry",3,1999,6,"auto(l4)","f",18,26,"r","midsize","transauto(l4)",18.0785140276811,18,-0.0785140276811092
+"toyota","camry",3,1999,6,"manual(m5)","f",18,26,"r","midsize","transmanual(m5)",18.0785140276811,18,-0.0785140276811092
+"toyota","camry",3.5,2008,6,"auto(s6)","f",19,28,"r","midsize","transauto(s6)",17.582321051441,19,1.41767894855897
+"toyota","camry solara",2.2,1999,4,"auto(l4)","f",21,27,"r","compact","transauto(l4)",20.1508140022094,21,0.849185997790613
+"toyota","camry solara",2.2,1999,4,"manual(m5)","f",21,29,"r","compact","transmanual(m5)",20.1508140022094,21,0.849185997790613
+"toyota","camry solara",2.4,2008,4,"manual(m5)","f",21,31,"r","compact","transmanual(m5)",20.4317335164174,21,0.56826648358259
+"toyota","camry solara",2.4,2008,4,"auto(s5)","f",22,31,"r","compact","transauto(s5)",20.4317335164174,22,1.56826648358259
+"toyota","camry solara",3,1999,6,"auto(l4)","f",18,26,"r","compact","transauto(l4)",18.0785140276811,18,-0.0785140276811092
+"toyota","camry solara",3,1999,6,"manual(m5)","f",18,26,"r","compact","transmanual(m5)",18.0785140276811,18,-0.0785140276811092
+"toyota","camry solara",3.3,2008,6,"auto(s5)","f",18,27,"r","compact","transauto(s5)",18.1003960450731,18,-0.100396045073097
+"toyota","corolla",1.8,1999,4,"auto(l3)","f",24,30,"r","compact","transauto(l3)",21.1869639894735,24,2.81303601052647
+"toyota","corolla",1.8,1999,4,"auto(l4)","f",24,33,"r","compact","transauto(l4)",21.1869639894735,24,2.81303601052647
+"toyota","corolla",1.8,1999,4,"manual(m5)","f",26,35,"r","compact","transmanual(m5)",21.1869639894735,26,4.81303601052647
+"toyota","corolla",1.8,2008,4,"manual(m5)","f",28,37,"r","compact","transmanual(m5)",21.9859584973136,28,6.01404150268638
+"toyota","corolla",1.8,2008,4,"auto(l4)","f",26,35,"r","compact","transauto(l4)",21.9859584973136,26,4.01404150268638
+"toyota","land cruiser wagon 4wd",4.7,1999,8,"auto(l4)","4",11,15,"r","suv","transauto(l4)",13.6748765818085,11,-2.67487658180855
+"toyota","land cruiser wagon 4wd",5.7,2008,8,"auto(s6)","4",13,18,"r","suv","transauto(s6)",11.8834961214883,13,1.11650387851171
+"toyota","toyota tacoma 4wd",2.7,1999,4,"manual(m5)","4",15,20,"r","pickup","transmanual(m5)",18.8556265181292,15,-3.85562651812921
+"toyota","toyota tacoma 4wd",2.7,1999,4,"auto(l4)","4",16,20,"r","pickup","transauto(l4)",18.8556265181292,16,-2.85562651812921
+"toyota","toyota tacoma 4wd",2.7,2008,4,"manual(m5)","4",17,22,"r","pickup","transmanual(m5)",19.6546210259693,17,-2.65462102596931
+"toyota","toyota tacoma 4wd",3.4,1999,6,"manual(m5)","4",15,17,"r","pickup","transmanual(m5)",17.042364040417,15,-2.04236404041697
+"toyota","toyota tacoma 4wd",3.4,1999,6,"auto(l4)","4",15,19,"r","pickup","transauto(l4)",17.042364040417,15,-2.04236404041697
+"toyota","toyota tacoma 4wd",4,2008,6,"manual(m6)","4",15,18,"r","pickup","transmanual(m6)",16.2871335673609,15,-1.28713356736088
+"toyota","toyota tacoma 4wd",4,2008,6,"auto(l5)","4",16,20,"r","pickup","transauto(l5)",16.2871335673609,16,-0.287133567360883
+"volkswagen","gti",2,1999,4,"manual(m5)","f",21,29,"r","compact","transmanual(m5)",21.2623943590388,21,-0.262394359038751
+"volkswagen","gti",2,1999,4,"auto(l4)","f",19,26,"r","compact","transauto(l4)",21.2623943590388,19,-2.26239435903875
+"volkswagen","gti",2,2008,4,"manual(m6)","f",21,29,"p","compact","transmanual(m6)",22.0613888668788,21,-1.06138886687884
+"volkswagen","gti",2,2008,4,"auto(s6)","f",22,29,"p","compact","transauto(s6)",22.0613888668788,22,-0.0613888668788434
+"volkswagen","gti",2.8,1999,6,"manual(m5)","f",17,24,"r","compact","transmanual(m5)",19.1900943845105,17,-2.19009438451047
+"volkswagen","jetta",1.9,1999,4,"manual(m5)","f",33,44,"d","compact","transmanual(m5)",21.5214318558548,33,11.4785681441452
+"volkswagen","jetta",2,1999,4,"manual(m5)","f",21,29,"r","compact","transmanual(m5)",21.2623943590388,21,-0.262394359038751
+"volkswagen","jetta",2,1999,4,"auto(l4)","f",19,26,"r","compact","transauto(l4)",21.2623943590388,19,-2.26239435903875
+"volkswagen","jetta",2,2008,4,"auto(s6)","f",22,29,"p","compact","transauto(s6)",22.0613888668788,22,-0.0613888668788434
+"volkswagen","jetta",2,2008,4,"manual(m6)","f",21,29,"p","compact","transmanual(m6)",22.0613888668788,21,-1.06138886687884
+"volkswagen","jetta",2.5,2008,5,"auto(s6)","f",21,29,"r","compact","transauto(s6)",20.7662013827987,21,0.23379861720133
+"volkswagen","jetta",2.5,2008,5,"manual(m5)","f",21,29,"r","compact","transmanual(m5)",20.7662013827987,21,0.23379861720133
+"volkswagen","jetta",2.8,1999,6,"auto(l4)","f",16,23,"r","compact","transauto(l4)",19.1900943845105,16,-3.19009438451047
+"volkswagen","jetta",2.8,1999,6,"manual(m5)","f",17,24,"r","compact","transmanual(m5)",19.1900943845105,17,-2.19009438451047
+"volkswagen","new beetle",1.9,1999,4,"manual(m5)","f",35,44,"d","subcompact","transmanual(m5)",21.5214318558548,35,13.4785681441452
+"volkswagen","new beetle",1.9,1999,4,"auto(l4)","f",29,41,"d","subcompact","transauto(l4)",21.5214318558548,29,7.47856814414521
+"volkswagen","new beetle",2,1999,4,"manual(m5)","f",21,29,"r","subcompact","transmanual(m5)",21.2623943590388,21,-0.262394359038751
+"volkswagen","new beetle",2,1999,4,"auto(l4)","f",19,26,"r","subcompact","transauto(l4)",21.2623943590388,19,-2.26239435903875
+"volkswagen","new beetle",2.5,2008,5,"manual(m5)","f",20,28,"r","subcompact","transmanual(m5)",20.7662013827987,20,-0.76620138279867
+"volkswagen","new beetle",2.5,2008,5,"auto(s6)","f",20,29,"r","subcompact","transauto(s6)",20.7662013827987,20,-0.76620138279867
+"volkswagen","passat",1.8,1999,4,"manual(m5)","f",21,29,"p","midsize","transmanual(m5)",21.7804693526708,21,-0.780469352670821
+"volkswagen","passat",1.8,1999,4,"auto(l5)","f",18,29,"p","midsize","transauto(l5)",21.7804693526708,18,-3.78046935267082
+"volkswagen","passat",2,2008,4,"auto(s6)","f",19,28,"p","midsize","transauto(s6)",22.0613888668788,19,-3.06138886687884
+"volkswagen","passat",2,2008,4,"manual(m6)","f",21,29,"p","midsize","transmanual(m6)",22.0613888668788,21,-1.06138886687884
+"volkswagen","passat",2.8,1999,6,"auto(l5)","f",16,26,"p","midsize","transauto(l5)",19.1900943845105,16,-3.19009438451047
+"volkswagen","passat",2.8,1999,6,"manual(m5)","f",18,26,"p","midsize","transmanual(m5)",19.1900943845105,18,-1.19009438451047
+"volkswagen","passat",3.6,2008,6,"auto(s6)","f",17,26,"p","midsize","transauto(s6)",17.9167889178223,17,-0.916788917822288

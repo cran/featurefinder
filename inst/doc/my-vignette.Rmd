@@ -1,0 +1,59 @@
+---
+title: "FeatureFinder"
+author: "Richard Davis"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{FeatureFinder}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+FeatureFinder is designed to give comprehensive and accurate sets of features which can be used in modelling, either to build a new model or to enhance and diagnose an existing model. Both methods are available through a single function, FindFeatures. The following give examples for each method.
+
+## Identifying Features for a model target
+
+A typical modelling scenario involves a table consisting of a set of predictors $\{x_i\}$ and a model target $y$.
+
+## Identifying Features for a model residual
+
+A typical modelling scenario involves a table consisting of a set of predictors $\{x_i\}$ and a model residual $r = y - p$, where $p$ is a prediction from a previously-fit model and $y$ is the model target
+
+## Finding features 
+
+For a model target, we simply define $r=y$, and for a model residual we use the residual $r = y - p$. We supply a single table consisting of all predictors together with $r$ and call the FindFeatures function.
+
+The function generates a decision tree for the entire table, as well as decision trees for every possible subset of the table. Subsets are defined using factor-valued columns in the data. They can either be user-defined or already included as predictors.
+
+Each decision tree will consist of an rpart tree as shown:
+
+```{r, fig.show='hold', fig.width=7, fig.height=7 }
+requireNamespace("png", quietly = TRUE)
+setwd("C:\\Users\\davis_000\\Dropbox\\00 latex\\2018\\featurefinder")
+img <- png::readPNG(".\\test\\ALL_ALL_medres2.png")
+grid::grid.raster(img)
+```
+
+A summary of residual nodes according to user-specified criteria for residual value and leaf volume will also be generated, in txt files (for example treesAll.txt and allfactors\treesSMIfactor.txt). These contain a summary of each significant term with its definition, volume and other parameters as shown:
+
+* Partition variable (categorical factor)
+
+* The level of the partition variable
+
+* Residual 
+
+* Leaf volume vs partition volume (percentage)
+
+* Leaf volume
+
+* Partition volume
+
+* Expected value average in leaf
+
+* Actual value average in leaf
+
+* Residual (checkval)
+
+* Leaf definition within this partition of the partition variable
+
+In the example, partitioning enables significant leaves to be found for each partition, although the full dataset does not yield leaves in the fitted tree. This illustrates the benefits of the partitioning technique.
