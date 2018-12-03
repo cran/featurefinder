@@ -4,7 +4,7 @@
 \name{expr}
 \alias{expr}
 \title{expr}
-\format{A data frame with 234 rows and 11 variables}
+\format{A string describing the formula defining a leaf node.}
 \source{
 \url{ggplot2.org}
 }

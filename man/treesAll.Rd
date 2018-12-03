@@ -4,7 +4,7 @@
 \name{treesAll}
 \alias{treesAll}
 \title{treesAll}
-\format{A data frame with 234 rows and 11 variables}
+\format{Full dataset tree example.}
 \source{
 \url{ggplot2.org}
 }

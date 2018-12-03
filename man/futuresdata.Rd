@@ -9,7 +9,7 @@
 \url{stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html}
 }
 \description{
-Sample data based on dataset EuStockMarkets in the datasets package.
+Sample futures data based on dataset EuStockMarkets in the datasets package.
 }
 \examples{
 data(futuresdata)

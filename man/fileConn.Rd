@@ -4,7 +4,7 @@
 \name{fileConn}
 \alias{fileConn}
 \title{fileConn}
-\format{A data frame with 234 rows and 11 variables}
+\format{A text output object.}
 \source{
 \url{ggplot2.org}
 }

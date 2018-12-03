@@ -4,7 +4,7 @@
 \name{vars}
 \alias{vars}
 \title{vars}
-\format{A data frame with 234 rows and 11 variables}
+\format{List of predictor variables.}
 \source{
 \url{ggplot2.org}
 }

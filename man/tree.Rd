@@ -4,7 +4,7 @@
 \name{tree}
 \alias{tree}
 \title{tree}
-\format{A data frame with 234 rows and 11 variables}
+\format{A sample tree object.}
 \source{
 \url{ggplot2.org}
 }

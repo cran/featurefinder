@@ -4,7 +4,7 @@
 \name{treeGenerationMinBucket}
 \alias{treeGenerationMinBucket}
 \title{treeGenerationMinBucket}
-\format{A data frame with 234 rows and 11 variables}
+\format{Minimum number of data points per leaf allowed in tree generation.}
 \source{
 \url{ggplot2.org}
 }

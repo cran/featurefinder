@@ -4,7 +4,7 @@
 \name{mainfaclevels}
 \alias{mainfaclevels}
 \title{mainfaclevels}
-\format{A data frame with 234 rows and 11 variables}
+\format{Levels of the main or current factor being scanned.}
 \source{
 \url{ggplot2.org}
 }

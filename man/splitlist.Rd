@@ -4,7 +4,7 @@
 \name{splitlist}
 \alias{splitlist}
 \title{splitlist}
-\format{A data frame with 234 rows and 11 variables}
+\format{Sample list of node split formulae.}
 \source{
 \url{ggplot2.org}
 }

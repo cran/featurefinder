@@ -4,7 +4,7 @@
 \name{filename}
 \alias{filename}
 \title{filename}
-\format{A data frame with 234 rows and 11 variables}
+\format{A filename for output.}
 \source{
 \url{ggplot2.org}
 }

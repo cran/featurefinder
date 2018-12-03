@@ -42,14 +42,14 @@ data$transfactortransautol5=(data$transfactor=='transauto(l5)')
 firstmodel=lm(formula=y ~ manufacturerchevrolet+
                 manufacturerford+
                 manufacturerhonda+
-               manufacturernissan+
-               manufacturerpontiac+
+                manufacturernissan+
+                manufacturerpontiac+
                 manufacturertoyota+
                 manufacturervolkswagen+
-               displ+
+                displ+
                 year
                 #transfactortransautol4
-               #transfactortransautol5
+                #transfactortransautol5
                , data=data)
 expected=predict(firstmodel,data)
 actual=data$y
@@ -65,10 +65,11 @@ exclusionVars="\"residual\",\"expected\", \"actual\",\"y\""
 factorToNumericList=c()
 
 # Now the dataset is prepared, try to find new features
-findFeatures(outputPath="NoPath", fcsv, exclusionVars,factorToNumericList,                     
+tempDir=findFeatures(outputPath="NoPath", fcsv, exclusionVars,factorToNumericList,                     
          treeGenerationMinBucket=20,
          treeSummaryMinBucket=30,
-         useSubDir=FALSE)  
+         useSubDir=FALSE,
+         tempDirFolderName="mpg")  
 
 # potential terms identified in residual scan
 # RESIDUAL: ALL,ALL,0.575,34.2,40,117,16,16.6,0.575,model< 16.5 and hwy< 28.5 and 
@@ -83,7 +84,7 @@ findFeatures(outputPath="NoPath", fcsv, exclusionVars,factorToNumericList,
 data$hwy=data0$hwy
 data$fl=data0$fl
 data$model=as.numeric(as.factor(data0$model))
-data$model16hwy28manufacturer=(data$model< 16.5) & (data$hwy< 28.5) & (data$manufacturer=="jeep" | data$manufacturer=="lincoln"|data$manufacturer=="mercury"|data$manufacturer=="nissan"|data$manufacturer=="pontiac"|data$manufacturer=="subaru")
+data$model16hwy28manufacturer=(data$model< 16.5) & (data$hwy< 28.5)&(data$manufacturer=="jeep"|data$manufacturer=="lincoln"|data$manufacturer=="mercury"|data$manufacturer=="nissan"|data$manufacturer=="pontiac"|data$manufacturer=="subaru")
 data$flr_hwy26=(data$fl=="r") & (data$hwy>=26.5)
 data$transfactortransmanualm5=(data$transfactor=='transmanual(m5)')
 data$manufacturertoyota=(data$manufacturer=='toyota')
@@ -110,6 +111,9 @@ expected=predict(secondmodel,data)
 
 summary(firstmodel)
 summary(secondmodel)
+# Append new features from the scan to a dataframe automatically
+dataWithNewFeatures = addFeatures(df=data0, path=tempDir, prefix="auto_")
+head(dataWithNewFeatures)
 
 # https://vincentarelbundock.github.io/Rdatasets/datasets.html
 # http://www.public.iastate.edu/~hofmann/data_in_r_sortable.html
@@ -158,10 +162,11 @@ exclusionVars="\"residual\",\"expected\", \"actual\",\"y\""
 factorToNumericList=c()
 
 # Now the dataset is prepared, try to find new features
-findFeatures(outputPath="NoPath", fcsv, exclusionVars,factorToNumericList,                     
+tempDir=findFeatures(outputPath="NoPath", fcsv, exclusionVars,factorToNumericList,                     
          treeGenerationMinBucket=30,
          treeSummaryMinBucket=50,
-         useSubDir=FALSE)  
+         useSubDir=FALSE,
+         tempDirFolderName="futures")  
 
 newfeat1=((data$SMIfactor=="smi0") & (data$CAC < 2253) & (data$CAC< 1998) & (data$CAC>=1882)) * 1.0
 newfeat2=((data$SMIfactor=="smi1") & (data$SMI < 7837) & (data$SMI >= 7499)) * 1.0
@@ -169,10 +174,10 @@ newfeatures=cbind(newfeat1, newfeat2) # create columns for the newly found featu
 datanew=cbind(data0,newfeatures)
 
 secondmodel=lm(formula=y ~ DAX+SMI+
-                            #CAC+
-                            FTSE+
-                            #SMIfactorsmi1+
-                            newfeat1+newfeat2,
+                           #CAC+
+                           FTSE+
+                           #SMIfactorsmi1+
+                           newfeat1+newfeat2,
                 data=datanew[,])
 expectednew=predict(secondmodel,datanew)
 
@@ -186,6 +191,10 @@ print(paste("NewRMSE = ",NewRMSE))
 
 summary(firstmodel)
 summary(secondmodel)
+
+# Append new features from the scan to a dataframe automatically
+dataWithNewFeatures = addFeatures(df=data0, path=tempDir, prefix="auto_")
+head(dataWithNewFeatures)
 
 
 ## ---- echo=FALSE, fig.show='hold', fig.width=7, include=FALSE, message=FALSE, warning=FALSE----

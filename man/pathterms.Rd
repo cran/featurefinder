@@ -4,7 +4,7 @@
 \name{pathterms}
 \alias{pathterms}
 \title{pathterms}
-\format{A data frame with 234 rows and 11 variables}
+\format{A string defining a leaf node formula.}
 \source{
 \url{ggplot2.org}
 }

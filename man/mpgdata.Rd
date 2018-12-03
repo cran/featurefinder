@@ -9,7 +9,7 @@
 \url{ggplot2.org}
 }
 \description{
-Sample data based on dataset mpg in the ggplot2 package
+Sample car data based on dataset mpg in the ggplot2 package
 }
 \examples{
 data(mpgdata)

@@ -4,7 +4,7 @@
 \name{names}
 \alias{names}
 \title{names}
-\format{A data frame with 234 rows and 11 variables}
+\format{A list of variable names used in examples.}
 \source{
 \url{ggplot2.org}
 }

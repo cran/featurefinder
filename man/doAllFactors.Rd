@@ -4,7 +4,7 @@
 \name{doAllFactors}
 \alias{doAllFactors}
 \title{doAllFactors}
-\format{A data frame with 234 rows and 11 variables}
+\format{A boolean to indicate whether to scan over all categorical factor partitions.}
 \source{
 \url{ggplot2.org}
 }

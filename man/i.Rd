@@ -4,7 +4,7 @@
 \name{i}
 \alias{i}
 \title{i}
-\format{A data frame with 234 rows and 11 variables}
+\format{An index variable used in examples.}
 \source{
 \url{ggplot2.org}
 }

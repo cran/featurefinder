@@ -4,7 +4,7 @@
 \name{treeSummaryMinBucket}
 \alias{treeSummaryMinBucket}
 \title{treeSummaryMinBucket}
-\format{A data frame with 234 rows and 11 variables}
+\format{Minimum number of data points per leaf allowed in tree summary.}
 \source{
 \url{ggplot2.org}
 }

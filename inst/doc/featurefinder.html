@@ -11,7 +11,7 @@
 
 <meta name="author" content="Richard Davis" />
 
-<meta name="date" content="2018-04-06" />
+<meta name="date" content="2018-12-03" />
 
 <title>FeatureFinder</title>
 
@@ -92,6 +92,9 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
 }
@@ -121,7 +124,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">FeatureFinder</h1>
 <h4 class="author"><em>Richard Davis</em></h4>
-<h4 class="date"><em>2018-04-06</em></h4>
+<h4 class="date"><em>2018-12-03</em></h4>
 
 </div>
 
@@ -132,7 +135,7 @@ $(document).ready(function () {
 <li><a href="#scanning-over-partitions-of-the-data">Scanning over partitions of the data</a></li>
 <li><a href="#the-feature-finding-process">The feature-finding process</a></li>
 <li><a href="#standard-dataset">Standard dataset</a></li>
-<li><a href="#more-challenging-dataset">More challenging dataset</a></li>
+<li><a href="#a-more-challenging-dataset">A more challenging dataset</a></li>
 </ul>
 </div>
 
@@ -252,14 +255,14 @@ data$transfactortransautol5=(data$transfactor=='transauto(l5)')
 firstmodel=lm(formula=y ~ manufacturerchevrolet+
                 manufacturerford+
                 manufacturerhonda+
-               manufacturernissan+
-               manufacturerpontiac+
+                manufacturernissan+
+                manufacturerpontiac+
                 manufacturertoyota+
                 manufacturervolkswagen+
-               displ+
+                displ+
                 year
                 #transfactortransautol4
-               #transfactortransautol5
+                #transfactortransautol5
                , data=data)
 expected=predict(firstmodel,data)
 actual=data$y
@@ -302,10 +305,11 @@ exclusionVars=&quot;\&quot;residual\&quot;,\&quot;expected\&quot;, \&quot;actual
 factorToNumericList=c()
 
 # Now the dataset is prepared, try to find new features
-findFeatures(outputPath=&quot;NoPath&quot;, fcsv, exclusionVars,factorToNumericList,                     
+tempDir=findFeatures(outputPath=&quot;NoPath&quot;, fcsv, exclusionVars,factorToNumericList,                     
          treeGenerationMinBucket=20,
          treeSummaryMinBucket=30,
-         useSubDir=FALSE)  </code></pre>
+         useSubDir=FALSE,
+         tempDirFolderName=&quot;mpg&quot;)  </code></pre>
 <pre><code>## [1] 20
 ## [1] 30
 ## [1] 0
@@ -584,7 +588,14 @@ findFeatures(outputPath=&quot;NoPath&quot;, fcsv, exclusionVars,factorToNumericL
 ## [1] &quot;RESIDUAL:: transfactor:transmanual(m5) :: 0.566(100%: 36 of 36 in tree, E=0, A=0, residual=0) :: NA and root&quot;
 ## 
 ##  node number: 1 
-##    root</code></pre>
+##    root
+## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5
+## [1] 6
+## [1] 7</code></pre>
 <pre class="r"><code># potential terms identified in residual scan
 # RESIDUAL: ALL,ALL,0.575,34.2,40,117,16,16.6,0.575,model&lt; 16.5 and hwy&lt; 28.5 and 
 #                                                   manufacturer=jeep,lincoln,mercury,nissan,pontiac,subaru
@@ -598,7 +609,7 @@ findFeatures(outputPath=&quot;NoPath&quot;, fcsv, exclusionVars,factorToNumericL
 data$hwy=data0$hwy
 data$fl=data0$fl
 data$model=as.numeric(as.factor(data0$model))
-data$model16hwy28manufacturer=(data$model&lt; 16.5) &amp; (data$hwy&lt; 28.5) &amp; (data$manufacturer==&quot;jeep&quot; | data$manufacturer==&quot;lincoln&quot;|data$manufacturer==&quot;mercury&quot;|data$manufacturer==&quot;nissan&quot;|data$manufacturer==&quot;pontiac&quot;|data$manufacturer==&quot;subaru&quot;)
+data$model16hwy28manufacturer=(data$model&lt; 16.5) &amp; (data$hwy&lt; 28.5)&amp;(data$manufacturer==&quot;jeep&quot;|data$manufacturer==&quot;lincoln&quot;|data$manufacturer==&quot;mercury&quot;|data$manufacturer==&quot;nissan&quot;|data$manufacturer==&quot;pontiac&quot;|data$manufacturer==&quot;subaru&quot;)
 data$flr_hwy26=(data$fl==&quot;r&quot;) &amp; (data$hwy&gt;=26.5)
 data$transfactortransmanualm5=(data$transfactor=='transmanual(m5)')
 data$manufacturertoyota=(data$manufacturer=='toyota')
@@ -684,12 +695,49 @@ summary(firstmodel)</code></pre>
 ## Residual standard error: 2.161 on 222 degrees of freedom
 ## Multiple R-squared:  0.7544, Adjusted R-squared:  0.7423 
 ## F-statistic:    62 on 11 and 222 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code># Append new features from the scan to a dataframe automatically
+dataWithNewFeatures = addFeatures(df=data0, path=tempDir, prefix=&quot;auto_&quot;)</code></pre>
+<pre><code>## These 6 new feature(s) were added to your data ('df'):
+## [1] &quot;df$auto_feat1 &lt;- as.numeric(df$model&lt; 16.5 &amp; df$hwy&lt; 28.5 &amp; df$manufacturer %in% c('jeep','lincoln','mercury','nissan','pontiac','subaru'))&quot;
+## df$auto_feat1 &lt;- as.numeric(df$model&lt; 16.5 &amp; df$hwy&lt; 28.5 &amp; df$manufacturer %in% c('jeep','lincoln','mercury','nissan','pontiac','subaru')) 
+## [1] &quot;df$auto_feat2 &lt;- as.numeric(df$class == 'compact')&quot;
+## df$auto_feat2 &lt;- as.numeric(df$class == 'compact') 
+## [1] &quot;df$auto_feat3 &lt;- as.numeric(df$fl == 'r' &amp; df$hwy&gt;=26.5)&quot;
+## df$auto_feat3 &lt;- as.numeric(df$fl == 'r' &amp; df$hwy&gt;=26.5) 
+## [1] &quot;df$auto_feat4 &lt;- as.numeric(df$manufacturer == 'toyota')&quot;
+## df$auto_feat4 &lt;- as.numeric(df$manufacturer == 'toyota') 
+## [1] &quot;df$auto_feat5 &lt;- as.numeric(df$transfactor == 'transmanual(m5)')&quot;
+## df$auto_feat5 &lt;- as.numeric(df$transfactor == 'transmanual(m5)') 
+## [1] &quot;df$auto_feat6 &lt;- as.numeric(df$trans == 'manual(m5)')&quot;
+## df$auto_feat6 &lt;- as.numeric(df$trans == 'manual(m5)')</code></pre>
+<pre class="r"><code>head(dataWithNewFeatures)</code></pre>
+<pre><code>##   manufacturer model displ year cyl      trans drv  y hwy fl   class
+## 1         audi    a4   1.8 1999   4   auto(l5)   f 18  29  p compact
+## 2         audi    a4   1.8 1999   4 manual(m5)   f 21  29  p compact
+## 3         audi    a4   2.0 2008   4 manual(m6)   f 20  31  p compact
+## 4         audi    a4   2.0 2008   4   auto(av)   f 21  30  p compact
+## 5         audi    a4   2.8 1999   6   auto(l5)   f 16  26  p compact
+## 6         audi    a4   2.8 1999   6 manual(m5)   f 18  26  p compact
+##       transfactor auto_feat1 auto_feat2 auto_feat3 auto_feat4 auto_feat5
+## 1   transauto(l5)          0          1          0          0          0
+## 2 transmanual(m5)          0          1          0          0          1
+## 3 transmanual(m6)          0          1          0          0          0
+## 4   transauto(av)          0          1          0          0          0
+## 5   transauto(l5)          0          1          0          0          0
+## 6 transmanual(m5)          0          1          0          0          1
+##   auto_feat6
+## 1          0
+## 2          1
+## 3          0
+## 4          0
+## 5          0
+## 6          1</code></pre>
 <pre class="r"><code># https://vincentarelbundock.github.io/Rdatasets/datasets.html
 # http://www.public.iastate.edu/~hofmann/data_in_r_sortable.html</code></pre>
 <p>The adjusted R-squared has improved from 0.721 to 0.745 as a result of the newly found features.</p>
 </div>
-<div id="more-challenging-dataset" class="section level2">
-<h2>More challenging dataset</h2>
+<div id="a-more-challenging-dataset" class="section level2">
+<h2>A more challenging dataset</h2>
 <p>A more challenging dataset is stock index data, where the target is to predict future relative movements of two indices, DAX and SMI. FindFeatures is able to identify features which can be added to the model as shown:</p>
 <pre class="r"><code>library(featurefinder)
 data=futuresdata
@@ -722,10 +770,11 @@ exclusionVars=&quot;\&quot;residual\&quot;,\&quot;expected\&quot;, \&quot;actual
 factorToNumericList=c()
 
 # Now the dataset is prepared, try to find new features
-findFeatures(outputPath=&quot;NoPath&quot;, fcsv, exclusionVars,factorToNumericList,                     
+tempDir=findFeatures(outputPath=&quot;NoPath&quot;, fcsv, exclusionVars,factorToNumericList,                     
          treeGenerationMinBucket=30,
          treeSummaryMinBucket=50,
-         useSubDir=FALSE)  </code></pre>
+         useSubDir=FALSE,
+         tempDirFolderName=&quot;futures&quot;)  </code></pre>
 <pre><code>## [1] 30
 ## [1] 50
 ## [1] 0
@@ -810,17 +859,19 @@ findFeatures(outputPath=&quot;NoPath&quot;, fcsv, exclusionVars,factorToNumericL
 ##    root
 ##    FTSE&gt;=5915
 ## [1] 6
-## [1] &quot;RESIDUAL:: SMIfactor:smi1 :: 0.00167(14.6%: 60 of 412 in tree, E=-0.000158, A=0.00151, residual=0.00167) :: FTSE&gt;=5915&quot;</code></pre>
+## [1] &quot;RESIDUAL:: SMIfactor:smi1 :: 0.00167(14.6%: 60 of 412 in tree, E=-0.000158, A=0.00151, residual=0.00167) :: FTSE&gt;=5915&quot;
+## [1] 1
+## [1] 2</code></pre>
 <pre class="r"><code>newfeat1=((data$SMIfactor==&quot;smi0&quot;) &amp; (data$CAC &lt; 2253) &amp; (data$CAC&lt; 1998) &amp; (data$CAC&gt;=1882)) * 1.0
 newfeat2=((data$SMIfactor==&quot;smi1&quot;) &amp; (data$SMI &lt; 7837) &amp; (data$SMI &gt;= 7499)) * 1.0
 newfeatures=cbind(newfeat1, newfeat2) # create columns for the newly found features
 datanew=cbind(data0,newfeatures)
 
 secondmodel=lm(formula=y ~ DAX+SMI+
-                            #CAC+
-                            FTSE+
-                            #SMIfactorsmi1+
-                            newfeat1+newfeat2,
+                           #CAC+
+                           FTSE+
+                           #SMIfactorsmi1+
+                           newfeat1+newfeat2,
                 data=datanew[,])
 expectednew=predict(secondmodel,datanew)
 
@@ -877,6 +928,28 @@ print(paste(&quot;OriginalRMSE = &quot;,OriginalRMSE))</code></pre>
 ## Residual standard error: 0.007532 on 1854 degrees of freedom
 ## Multiple R-squared:  0.02145,    Adjusted R-squared:  0.01881 
 ## F-statistic: 8.126 on 5 and 1854 DF,  p-value: 1.345e-07</code></pre>
+<pre class="r"><code># Append new features from the scan to a dataframe automatically
+dataWithNewFeatures = addFeatures(df=data0, path=tempDir, prefix=&quot;auto_&quot;)</code></pre>
+<pre><code>## These 2 new feature(s) were added to your data ('df'):
+## [1] &quot;df$auto_feat1 &lt;- as.numeric(df$SMIfactor == 'smi0' &amp; df$CAC&lt; 2253 &amp; df$CAC&lt; 1998 &amp; df$CAC&gt;=1882)&quot;
+## df$auto_feat1 &lt;- as.numeric(df$SMIfactor == 'smi0' &amp; df$CAC&lt; 2253 &amp; df$CAC&lt; 1998 &amp; df$CAC&gt;=1882) 
+## [1] &quot;df$auto_feat2 &lt;- as.numeric(df$SMIfactor == 'smi1' &amp; df$FTSE&gt;=5915)&quot;
+## df$auto_feat2 &lt;- as.numeric(df$SMIfactor == 'smi1' &amp; df$FTSE&gt;=5915)</code></pre>
+<pre class="r"><code>head(dataWithNewFeatures)</code></pre>
+<pre><code>##       DAX    SMI    CAC   FTSE SMIfactor            y auto_feat1
+## 1 1628.75 1678.1 1772.8 2443.6      smi0 -0.015480678          0
+## 2 1613.63 1688.5 1750.5 2460.2      smi0  0.001450780          0
+## 3 1606.51 1678.6 1718.0 2448.2      smi0  0.005767910          0
+## 4 1621.04 1684.1 1708.1 2470.4      smi0 -0.003261110          0
+## 5 1618.16 1686.6 1723.1 2484.7      smi0  0.004227839          0
+## 6 1610.61 1671.6 1714.3 2466.8      smi0  0.005744589          0
+##   auto_feat2
+## 1          0
+## 2          0
+## 3          0
+## 4          0
+## 5          0
+## 6          0</code></pre>
 <p>The newly discovered features are statistically significant, with improved adjusted R-squared, lower residual errors and improved F-statistic and p-value.</p>
 </div>
 

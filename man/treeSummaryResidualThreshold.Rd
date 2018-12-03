@@ -4,7 +4,7 @@
 \name{treeSummaryResidualThreshold}
 \alias{treeSummaryResidualThreshold}
 \title{treeSummaryResidualThreshold}
-\format{A data frame with 234 rows and 11 variables}
+\format{Minimum allowed residual value in leaf summary generation.}
 \source{
 \url{ggplot2.org}
 }

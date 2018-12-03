@@ -4,7 +4,7 @@
 \name{maxFactorLevels}
 \alias{maxFactorLevels}
 \title{maxFactorLevels}
-\format{A data frame with 234 rows and 11 variables}
+\format{Maximum allowable number of factor levels before the variable is converted to numeric.}
 \source{
 \url{ggplot2.org}
 }
