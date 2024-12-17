@@ -4,18 +4,25 @@
 \name{data}
 \alias{data}
 \title{data}
-\format{A data frame with 234 rows and 11 variables}
+\format{
+A data frame with 1860 rows and 4 variables
+}
 \source{
-\url{ggplot2.org}
+\url{https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html}
 }
 \description{
-Sample data based on dataset mpg in the ggplot2 package
+Sample data based on dataset EuStockMarkets in the datasets package.
 }
 \examples{
-data(data)
-head(data)
+data(mycsv)
+thismodel=lm(formula=DAX ~ .,data=data)
+expectedprob=predict(thismodel,data)
+actualprob=data$DAX
+residual=actualprob-expectedprob
+data=cbind(data,expectedprob, actualprob, residual)
 }
 \author{
 Richard Davis \email{richard.davis@cba.com.au}
 }
 \keyword{data}
+\keyword{sample}

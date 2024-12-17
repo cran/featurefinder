@@ -4,8 +4,16 @@
 \alias{saveTree}
 \title{saveTree}
 \usage{
-saveTree(data, vars, expr, i, outputPath, varname, mainfaclev,
-  treeGenerationMinBucket, ...)
+saveTree(
+  data,
+  vars,
+  expr,
+  i,
+  varname,
+  mainfaclev,
+  treeGenerationMinBucket,
+  ...
+)
 }
 \arguments{
 \item{data}{A dataframe containing the residual and some predictors}
@@ -15,8 +23,6 @@ saveTree(data, vars, expr, i, outputPath, varname, mainfaclev,
 \item{expr}{A expression to be modelled by the RPART tree}
 
 \item{i}{An integer corresponding to the factor level}
-
-\item{outputPath}{The output directory}
 
 \item{varname}{A string corresponding to the name of the factor variable being analysed}
 
@@ -31,12 +37,5 @@ A tree object
 }
 \description{
 Generate a residual tree on a subset of the data specified by the factor level mainfaclev (main factor level)
-}
-\examples{
-
-require(featurefinder)
-data(examples)
-fit1=saveTree(data,vars,expr,i,outputPath=tempdir(),runname,mainfaclevels[1],
-     treeGenerationMinBucket)
 }
 \keyword{saveTree}

@@ -4,7 +4,7 @@
 \alias{generateTrees}
 \title{generateTrees}
 \usage{
-generateTrees(data, vars, expr, outputPath, runname, ...)
+generateTrees(data, vars, expr, runname, ...)
 }
 \arguments{
 \item{data}{A dataframe}
@@ -12,8 +12,6 @@ generateTrees(data, vars, expr, outputPath, runname, ...)
 \item{vars}{A list of candidate predictors}
 
 \item{expr}{A expression to be modelled by the RPART tree}
-
-\item{outputPath}{The output directory}
 
 \item{runname}{A string corresponding to the name of the variable being modelled}
 
@@ -24,17 +22,5 @@ A list of residual trees for each level of the mainfac factor provided
 }
 \description{
 Generate a residual tree for each level of factor mainfac
-}
-\examples{
-
-require(featurefinder)
-data(examples)
-treesThisvar=generateTrees(data=dat0,vars,expr,outputPath=tempdir(),runname,
-  treeGenerationMinBucket=treeGenerationMinBucket,
-  treeSummaryMinBucket=treeSummaryMinBucket,
-  treeSummaryResidualThreshold=treeSummaryResidualThreshold,
-  treeSummaryResidualMagnitudeThreshold=treeSummaryResidualMagnitudeThreshold,
-  doAllFactors=doAllFactors,
-  maxFactorLevels=maxFactorLevels)
 }
 \keyword{generateTrees}

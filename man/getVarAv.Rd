@@ -19,10 +19,4 @@ An average of the numeric variable varString in the segment
 \description{
 This function generates a residual tree on a subset of the data
 }
-\examples{
-
-require(featurefinder)
-data(examples)
-av=getVarAv(dat,"expected",pathterms)
-}
 \keyword{saveTree}

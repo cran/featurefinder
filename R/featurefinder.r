@@ -1,6 +1,7 @@
-# importFrom("grDevices", "dev.off")
-# importFrom("stats", "as.formula", "na.omit")
-# importFrom("utils", "read.csv")
+
+#' @importFrom grDevices dev.off
+#' @importFrom stats as.formula na.omit
+#' @importFrom utils read.csv
 
 #' @title saveTree
 #' @description Generate a residual tree on a subset of the data specified by the factor level mainfaclev (main factor level)
@@ -8,7 +9,6 @@
 #' @param vars A list of candidate predictors
 #' @param expr A expression to be modelled by the RPART tree
 #' @param i An integer corresponding to the factor level
-#' @param outputPath The output directory
 #' @param varname A string corresponding to the name of the factor variable being analysed
 #' @param mainfaclev A level of the mainfac factor
 #' @param treeGenerationMinBucket Minimum size for tree generation
@@ -17,15 +17,9 @@
 #' @keywords saveTree
 #' @export 
 #' @name saveTree
-#' @examples
-#' 
-#' require(featurefinder)
-#' data(examples)
-#' fit1=saveTree(data,vars,expr,i,outputPath=tempdir(),runname,mainfaclevels[1],
-#'      treeGenerationMinBucket)
 
-saveTree<-function(data,vars,expr,i,outputPath,varname,mainfaclev,treeGenerationMinBucket,...) {
-  
+saveTree<-function(data,vars,expr,i,varname,mainfaclev,treeGenerationMinBucket,...) {
+    
   dat=data[data$mainfac==mainfaclev,]
   print(treeGenerationMinBucket)
   
@@ -62,9 +56,9 @@ saveTree<-function(data,vars,expr,i,outputPath,varname,mainfaclev,treeGeneration
   dat=cbind(residual,dat)
   dat_train=dat[dat$ttd_flag==0,]
   dat_test=dat[dat$ttd_flag==1,]
-  
+
   fit <- rpart::rpart(expr, data = dat_test, control=rpart::rpart.control(minbucket=treeGenerationMinBucket))
-  
+
   improve<-NULL # this fixes the NOTE in R CMD check, without throwing other errors
   try({
     datfit=fit$splits
@@ -75,17 +69,15 @@ saveTree<-function(data,vars,expr,i,outputPath,varname,mainfaclev,treeGeneration
       fitarrange=plyr::arrange(datfit,plyr::desc(improve)) # ~improve fixes the note but throws errors in the example
     } 
   })
-  varname=gsub(" ", "_", paste(outputPath,varname,sep="/"))
-  mainfaclev=gsub(" ", "_", mainfaclev)
   grDevices::png(paste(varname,'_',mainfaclev,'.png',sep=""), width=750, height = 500)
   rpart.plot::rpart.plot(fit, varlen=0, faclen=0, extra=1, digits=5)
-  grDevices::dev.off()
+  dev.off()
   grDevices::png(paste(varname,'_',mainfaclev,'_medres.png',sep=""), width=1800, height = 1200)
   rpart.plot::rpart.plot(fit, varlen=0, faclen=0, extra=1, digits=5)
-  grDevices::dev.off()
+  dev.off()
   grDevices::png(paste(varname,'_',mainfaclev,'_highres.png',sep=""), width=3000, height = 2000)
   rpart.plot::rpart.plot(fit, varlen=0, faclen=0, extra=1, digits=5)
-  grDevices::dev.off()
+  dev.off()
   return(list(fitarrange,fit))
 }
 
@@ -94,35 +86,21 @@ saveTree<-function(data,vars,expr,i,outputPath,varname,mainfaclev,treeGeneration
 #' @param data A dataframe
 #' @param vars A list of candidate predictors
 #' @param expr A expression to be modelled by the RPART tree
-#' @param outputPath The output directory
 #' @param runname A string corresponding to the name of the variable being modelled
 #' @param ... and parameters to be passed through
 #' @keywords generateTrees
 #' @return A list of residual trees for each level of the mainfac factor provided
 #' @export 
-#' @name generateTrees
-#' @examples
-#' 
-#' require(featurefinder)
-#' data(examples)
-#' treesThisvar=generateTrees(data=dat0,vars,expr,outputPath=tempdir(),runname,
-#'   treeGenerationMinBucket=treeGenerationMinBucket,
-#'   treeSummaryMinBucket=treeSummaryMinBucket,
-#'   treeSummaryResidualThreshold=treeSummaryResidualThreshold,
-#'   treeSummaryResidualMagnitudeThreshold=treeSummaryResidualMagnitudeThreshold,
-#'   doAllFactors=doAllFactors,
-#'   maxFactorLevels=maxFactorLevels)
-
-
-generateTrees<-function(data,vars,expr,outputPath,runname,...) {
+ 
+generateTrees<-function(data,vars,expr,runname,...) {
   
   mainfaclevels=levels(data$mainfac)
   fits=list()
   for (i in 1:length(mainfaclevels)) {
     print(paste("Doing level ",i,": ",mainfaclevels[i],sep=""))
-    try({fits[[i]]=saveTree(data,vars,expr,i,outputPath,runname,mainfaclevels[i],...)})
+    try({fits[[i]]=saveTree(data,vars,expr,i,runname,mainfaclevels[i],...)})
   }
-  save(file=paste(outputPath,"/mainfactors_",runname,".Rdata",sep=""),fits)
+  save(file=paste("mainfactors ",runname,".Rdata",sep=""),fits)
   return(fits)
 }
 
@@ -132,13 +110,7 @@ generateTrees<-function(data,vars,expr,outputPath,runname,...) {
 #' @return A list of parsed splits.
 #' @keywords saveTree
 #' @export 
-#' @name parseSplits
-#' @examples
-#' 
-#' require(featurefinder)
-#' data(examples)
-#' parseSplits(treesAll[[1]][[2]])
-
+ 
 parseSplits<-function(thistree) {
   nodes <- as.numeric(row.names(thistree$frame))
   leafnodes=thistree$frame$var=="<leaf>"
@@ -150,7 +122,9 @@ parseSplits<-function(thistree) {
   all=cbind(allpaths,allresiduals,allvolumes,allnumbers,totalvol)
   return(all)
 }
-
+#all=parsesplits(tree)
+#mytree=(treesThisvar[[2]][[2]])
+#pp=parsesplits(mytree)
 
 #' @title getVarAv
 #' @description This function generates a residual tree on a subset of the data
@@ -160,12 +134,6 @@ parseSplits<-function(thistree) {
 #' @return An average of the numeric variable varString in the segment
 #' @keywords saveTree
 #' @export 
-#' @name getVarAv
-#' @examples
-#' 
-#' require(featurefinder)
-#' data(examples)
-#' av=getVarAv(dat,"expected",pathterms)
 
 getVarAv<-function(dd,varAv,varString)
 {
@@ -186,7 +154,7 @@ getVarAv<-function(dd,varAv,varString)
       evalstr=paste("dd[dd$",thisRule,",]",sep="")
     } else {
       # handle multiple value cases
-      if (class(dd[,thisVar])=="factor") {
+      if (inherits(dd[, thisVar], "factor")) {
         evalstr=paste("dd[which(as.character(dd$",gsub("==",") %in% as.character(c(",thisRule),"))),]",sep="",collapse="")
       } else {
         evalstr=paste("dd[which(dd$",gsub("==","==c(",thisRule),")),]",sep="",collapse="")
@@ -204,7 +172,7 @@ getVarAv<-function(dd,varAv,varString)
     if (multiflag==FALSE) {
       evalstr=paste("dd[dd$",thisRule,",]$",varAv,collapse="",sep="")  
     } else {
-      if (class(dd[,thisVar])=="factor") {
+      if (inherits(dd[, thisVar], "factor")) { # check the class is factor
         evalstr=paste("dd[which(as.character(dd$",gsub("==",") %in% as.character(c(",thisRule),"))),]$",varAv,sep="",collapse="")
       } else {
         evalstr=paste("dd[which(dd$",gsub("==","==c(",thisRule),")),]$",varAv,sep="",collapse="")
@@ -218,8 +186,8 @@ getVarAv<-function(dd,varAv,varString)
     }
     tryCatch({res=eval(parse(text=evalstr))},warning=function(){},error=function(){print(paste("Error in expectation: ",evalstr)) })
     res=res[res!="."]
-    if (class(res)=="factor") {res=as.numeric(levels(res))[res]}
-    res=stats::na.omit(res)
+    if (inherits(res, "factor")) {res=as.numeric(levels(res))[res]}
+    res=na.omit(res)
     res=mean(res)
     if (is.na(res)) {
       print(paste("Mean residual is NA - check evalstr: ", evalstr))}
@@ -241,14 +209,6 @@ getVarAv<-function(dd,varAv,varString)
 #' @return Residuals are printed and also saved in a simplified format.
 #' @keywords saveTree
 #' @export 
-#' @name printResiduals
-#' @examples
-#' 
-#' require(featurefinder)
-#' data(examples)
-#' printResiduals(fileConn,splitlist[t][[1]],dat, runname, names[t],
-#'   treeSummaryResidualThreshold,treeSummaryMinBucket,
-#'   treeSummaryResidualMagnitudeThreshold)
 
 printResiduals<-function(fileConn,all, dat, runname, levelname,treeSummaryResidualThreshold,treeSummaryMinBucket,treeSummaryResidualMagnitudeThreshold,...) {
   for (i in 1:dim(all)[[1]]) {
@@ -291,18 +251,6 @@ printResiduals<-function(fileConn,all, dat, runname, levelname,treeSummaryResidu
 #' @return A list of residuals for each tree provided.
 #' @keywords saveTree
 #' @export 
-#' @name generateResidualCutoffCode
-#' @examples
-#' 
-#' require(featurefinder)
-#' data(examples)
-#' generateResidualCutoffCode(data=dat0,"treesAll.txt",treesAll,mainfaclevels, runname,
-#'   treeGenerationMinBucket=treeGenerationMinBucket,
-#'   treeSummaryMinBucket=treeSummaryMinBucket,
-#'   treeSummaryResidualThreshold=treeSummaryResidualThreshold,
-#'   treeSummaryResidualMagnitudeThreshold=treeSummaryResidualMagnitudeThreshold,
-#'   doAllFactors=doAllFactors,
-#'   maxFactorLevels=maxFactorLevels)
 
 generateResidualCutoffCode<-function(data,filename,trees,names, runname,...){
   fileConn<-file(filename,"w")
@@ -311,92 +259,69 @@ generateResidualCutoffCode<-function(data,filename,trees,names, runname,...){
     #writeLines("", con=fileConn) 
     writeLines(paste("Tree ",t,": ",names[t],collapse=""), con=fileConn) 
     try({tree=trees[[t]][[2]]
-    splitlist[t]=list(parseSplits(tree))
-    dat=data[data$mainfac==names[t],]
-    # Add any other filters being applied to the data in the function saveTree here    
-    printResiduals(fileConn,splitlist[t][[1]],dat, runname, names[t],...)
+         splitlist[t]=list(parseSplits(tree))
+         dat=data[data$mainfac==names[t],]
+         # Add any other filters being applied to the data in the function saveTree here    
+         printResiduals(fileConn,splitlist[t][[1]],dat, runname, names[t],...)
     })
   }
   close(fileConn)
   return(splitlist)
 }
-#generateResidualCutoffCode(file.path(tempdir(),"treesTest.txt"),treesProducts,mainfaclevels)
+#generateResidualCutoffCode("treesTest.txt",treesProducts,mainfaclevels)
 
 #' @title findFeatures
 #' @description Perform analysis of residuals grouped by factor to identify features which explain the target variable
-#' @param outputPath A string containing the location of the input csv file. Results are also stored in this location. Set to "NoPath" to use tempdir() or leave blank
+#' @param OutputPath A string containing the location of the input csv file. Results are also stored in this location.
 #' @param fcsv A string containing the name of a csv file
-#' @param exclusionVars A string consisting of a list of variable names with double quotes around each variable
-#' @param factorToNumericList A list of variable names as strings
-#' @param treeGenerationMinBucket Desired minimum number of data points per leaf (default 20)
-#' @param treeSummaryMinBucket Minimum number of data points in each leaf for the summary (default 50)
+#' @param ExclusionVars A string consisting of a list of variable names with double quotes around each variable
+#' @param FactorToNumericList A list of variable names as strings
+#' @param treeGenerationMinBucket Desired minimum number of data points per leaf (default 50)
+#' @param treeSummaryMinBucket Minimum number of data points in each leaf for the summary (default 20)
 #' @param treeSummaryResidualThreshold Minimum residual in the summary (default 0 for positive residuals)
 #' @param treeSummaryResidualMagnitudeThreshold Minimum residual magnitude in the summary (default 0 i.e. no restriction)
 #' @param doAllFactors Flag to indicate whether to analyse the levels of all factor variables (default TRUE)
-#' @param maxFactorLevels Maximum number of levels per factor before it is converted to numeric (default 20)
-#' @param useSubDir Flag to specify whether the partition trees should be saved in the current directory or a subdirectory
-#' @param tempDirFolderName specify a subfolder name if writing multiple scans to the temporary directory
-#' @return outputPath returns the location of the output for reference in addFeatures and for any other purpose. Saves residual CART trees and associated highlighted residuals for each to the path provided.
+#' @param maxFactorLevels (maximum number of levels per factor before it is converted to numeric (default 20)
+#' @return Saves residual CART trees and associated highlighted residuals for each to the path provided.
 #' @keywords findFeatures
 #' @export 
 #' @examples
 #' 
 #' require(featurefinder)
-#' data(futuresdata)
-#' data=futuresdata
+#' data(mycsv)
 #' data$SMIfactor=paste("smi",as.matrix(data$SMIfactor),sep="")
-#' n=length(data$DAX)
 #' nn=floor(length(data$DAX)/2)
 #' 
 #' # Can we predict the relative movement of DAX and SMI?
-#' data$y=data$DAX*0 # initialise the target to 0
-#' data$y[1:(n-1)]=((data$DAX[2:n])-(data$DAX[1:(n-1)]))/
-#'   (data$DAX[1:(n-1)])-(data$SMI[2:n]-(data$SMI[1:(n-1)]))/(data$SMI[1:(n-1)])
+#' data$y=data$DAX*0
+#' data$y[1:(nn-1)]=((data$DAX[2:nn])-(data$DAX[1:(nn-1)]))/
+#'                   (data$DAX[1:(nn-1)])-(data$SMI[2:nn]-(data$SMI[1:(nn-1)]))/(data$SMI[1:(nn-1)])
 #' 
-#' # Fit a simple model
 #' thismodel=lm(formula=y ~ .,data=data)
 #' expected=predict(thismodel,data)
 #' actual=data$y
 #' residual=actual-expected
 #' data=cbind(data,expected, actual, residual)
 #' 
-#' CSVPath=tempdir()
-#' fcsv=paste(CSVPath,"/futuresdata.csv",sep="")
-#' write.csv(data[(nn+1):(length(data$y)),],file=fcsv,row.names=FALSE)
-
-#' exclusionVars="\"residual\",\"expected\", \"actual\",\"y\""
-#' factorToNumericList=c()
+#' # setwd('.\\test')
+#' write.csv(data[(nn+1):(length(data$y)),],file='mycsv.csv',row.names=FALSE)
 #' 
-#' # Now the dataset is prepared, try to find new features
-#' findFeatures(outputPath="NoPath", fcsv, exclusionVars,factorToNumericList,                     
+#' OutputPath="."
+#' fcsv="mycsv.csv"
+#' ExclusionVars="\"residual\",\"expected\", \"actual\",\"y\""
+#' FactorToNumericList=c()
+#' findFeatures(OutputPath, fcsv, ExclusionVars,FactorToNumericList,                     
 #'          treeGenerationMinBucket=50,
-#'          treeSummaryMinBucket=20,
-#'          useSubDir=FALSE)  
-#'          
-#' newfeat1=((data$SMIfactor==0) & (data$CAC < 2253) & (data$CAC< 1998) & (data$CAC>=1882)) * 1.0
-#' newfeat2=((data$SMIfactor==1) & (data$SMI < 7837) & (data$SMI >= 7499)) * 1.0
-#' newfeatures=cbind(newfeat1, newfeat2) # create columns for the newly found features
-#' datanew=cbind(data,newfeatures)
-#' thismodel=lm(formula=y ~ .,data=datanew)
-#' expectednew=predict(thismodel,datanew)
-#' 
-#' requireNamespace("Metrics")
-#' OriginalRMSE = Metrics::rmse(data$y,expected)
-#' NewRMSE = Metrics::rmse(data$y,expectednew)
-#' 
-#' print(paste("OriginalRMSE = ",OriginalRMSE))
-#' print(paste("NewRMSE = ",NewRMSE))
+#'          treeSummaryMinBucket=20)  
+          
+findFeatures <- function(OutputPath, fcsv, ExclusionVars,FactorToNumericList, 
+                     treeGenerationMinBucket=50,
+                     treeSummaryMinBucket=20,
+                     treeSummaryResidualThreshold=0,
+                     treeSummaryResidualMagnitudeThreshold=0,
+                     doAllFactors=TRUE,
+                     maxFactorLevels=20) {
 
-findFeatures <- function(outputPath="NoPath", fcsv, exclusionVars,factorToNumericList, 
-                         treeGenerationMinBucket=20,
-                         treeSummaryMinBucket=50,
-                         treeSummaryResidualThreshold=0,
-                         treeSummaryResidualMagnitudeThreshold=0,
-                         doAllFactors=TRUE,
-                         maxFactorLevels=20, 
-                         useSubDir=TRUE,
-                         tempDirFolderName="") {
-  
   print(treeGenerationMinBucket)  
   print(treeSummaryMinBucket)
   print(treeSummaryResidualThreshold)
@@ -404,29 +329,23 @@ findFeatures <- function(outputPath="NoPath", fcsv, exclusionVars,factorToNumeri
   print(doAllFactors)
   print(maxFactorLevels)
   
-  if (outputPath=="NoPath") {
-    if (tempDirFolderName=="") {
-      outputPath=tempdir()
-    } else {
-      outputPath=paste(tempdir(),"/",tempDirFolderName,sep="") # create a folder but do not change the working directory
-    }
-    dir.create(path=outputPath)
-  }
+  currdir=getwd()
+  setwd(OutputPath)
   
-  dat=utils::read.csv(paste(fcsv,sep="",collapse=""))
+  dat=read.csv(paste(fcsv,sep="",collapse=""))
   
   vars=names(dat)
-  eval(parse(text=paste("vars=vars[!(vars %in% c(",exclusionVars,"))]")))
+  eval(parse(text=paste("vars=vars[!(vars %in% c(",ExclusionVars,"))]")))
   vars=vars[]
   varsexpr=paste(vars,collapse=" + ")
-  expr=stats::as.formula(paste("residual ~", eval(varsexpr)))
+  expr=as.formula(paste("residual ~", eval(varsexpr)))
   dat0=dat
   dat0$ttd_flag=1
   
   # Handle factor to numeric conversion list
-  if (!is.null(factorToNumericList)) {
-    for (v in 1:length(factorToNumericList)) {
-      dat0[,factorToNumericList[[v]]]=as.numeric(dat0[,factorToNumericList[[v]]])
+  if (!is.null(FactorToNumericList)) {
+    for (v in 1:length(FactorToNumericList)) {
+      dat0[,FactorToNumericList[[v]]]=as.numeric(dat0[,FactorToNumericList[[v]]])
     }
   }
   
@@ -449,25 +368,28 @@ findFeatures <- function(outputPath="NoPath", fcsv, exclusionVars,factorToNumeri
         # print(class(dat[,factorlist[f]]))
       }
     }
-  }
-  dat0=as.data.frame(dat0,stringsAsFactors=FALSE)        
-  
+    }
+  #dat0=as.data.frame(dat0,stringsAsFactors=FALSE)          
+  dat0[] <- lapply(dat0, function(x) if (is.character(x)) as.factor(x) else x)
+
   # An example of how to generate residual trees for all levels of a categorical variable, 
   # in this example just one level ("ALL"). The variable must be formatted as factor.
   dat0$mainfac=as.factor("ALL") # can replace with dat0$mainfac=dat0$segmentlabel, for example
   runname="ALL" # can replace with "SEGMENTLABEL"
-  treesAll=generateTrees(data=dat0,vars=vars,expr=expr,outputPath,runname=runname, 
+  print('done1')
+
+  treesAll=generateTrees(data=dat0,vars=vars,expr=expr,runname=runname, 
                          treeGenerationMinBucket=treeGenerationMinBucket,
                          treeSummaryMinBucket=treeSummaryMinBucket,
                          treeSummaryResidualThreshold=treeSummaryResidualThreshold,
                          treeSummaryResidualMagnitudeThreshold=treeSummaryResidualMagnitudeThreshold,
                          doAllFactors=doAllFactors,
                          maxFactorLevels=maxFactorLevels)
-  
+
   #bestCustScoreAll=optimiseCustScore("ALL")
   #plot(x=cutofflist,bestCustScoreAll[[1]],xlab='Cutoff',ylab='Mean positive residuals over entire dataset')
   mainfaclevels=levels(dat0$mainfac)
-  generateResidualCutoffCode(data=dat0,filename=paste(outputPath,"treesAll.txt",sep="/"),treesAll,mainfaclevels,runname,
+  generateResidualCutoffCode(data=dat0,"treesAll.txt",treesAll,mainfaclevels, runname,
                              treeGenerationMinBucket=treeGenerationMinBucket,
                              treeSummaryMinBucket=treeSummaryMinBucket,
                              treeSummaryResidualThreshold=treeSummaryResidualThreshold,
@@ -478,10 +400,8 @@ findFeatures <- function(outputPath="NoPath", fcsv, exclusionVars,factorToNumeri
   # Run this section if you want to generate residuals for every level of every categorical variable  
   if (doAllFactors) {
     # Loop over all categorical variables. These can include user-defined variables based on numerical variables 
-    if (useSubDir) {
-      dir.create(file.path(getwd(), "allfactors"), showWarnings = FALSE)      
-      outputPath=paste(outputPath,"/allfactors",sep="")
-    }
+    dir.create(file.path(getwd(), "allfactors"), showWarnings = FALSE)
+    setwd("./allfactors")
     catlist = lapply(dat0[,vars],FUN=class)=="factor"
     lens=lapply(dat0[,vars],FUN=function(x){length(levels(x))})
     
@@ -492,22 +412,21 @@ findFeatures <- function(outputPath="NoPath", fcsv, exclusionVars,factorToNumeri
     length(faclist)
     if (length(faclist)>0) {
       for (v in 1:length(faclist)) {
-        #if (shiny::isRunning()) {shiny::setProgress(value=floor((v/length(faclist))/0.1)*0.1)}
         thisvar=faclist[v]
         dat0$mainfac=dat0[,thisvar]
         mainfaclevels=levels(dat0$mainfac)
         print(paste("Variable ", v, ": ", thisvar, " has levels:", sep=""))
         print(mainfaclevels)
         runname=thisvar
-        treesThisvar=generateTrees(data=dat0,vars,expr,outputPath,runname,
+        treesThisvar=generateTrees(data=dat0,vars,expr,runname,
                                    treeGenerationMinBucket=treeGenerationMinBucket,
                                    treeSummaryMinBucket=treeSummaryMinBucket,
                                    treeSummaryResidualThreshold=treeSummaryResidualThreshold,
                                    treeSummaryResidualMagnitudeThreshold=treeSummaryResidualMagnitudeThreshold,
                                    doAllFactors=doAllFactors,
                                    maxFactorLevels=maxFactorLevels)
-        generateResidualCutoffCode(data=dat0,filename=paste(outputPath,"/trees",thisvar,".txt",sep=""),treesThisvar,mainfaclevels, 
-                                   runname,treeGenerationMinBucket=treeGenerationMinBucket,
+        generateResidualCutoffCode(data=dat0,paste("trees",thisvar,".txt",sep=""),treesThisvar,mainfaclevels, runname, 
+                                   treeGenerationMinBucket=treeGenerationMinBucket,
                                    treeSummaryMinBucket=treeSummaryMinBucket,
                                    treeSummaryResidualThreshold=treeSummaryResidualThreshold,
                                    treeSummaryResidualMagnitudeThreshold=treeSummaryResidualMagnitudeThreshold,
@@ -515,483 +434,25 @@ findFeatures <- function(outputPath="NoPath", fcsv, exclusionVars,factorToNumeri
                                    maxFactorLevels=maxFactorLevels)
       }  
     }
-    if (useSubDir) {
-      # not required in this implementation
-    }
-    # stack text files into a single text file
-    out.file<-""
-    file.names <- dir(outputPath, pattern =".txt")
-    for(i in 1:length(file.names)){
-      print(i)
-      file <- utils::read.table(file.path(outputPath,file.names[i]),header=FALSE, sep="\\", stringsAsFactors=FALSE)
-      out.file <- rbind(out.file, file)
-    }
-    out.file=out.file[2:dim(out.file)[1],]
-    names(out.file)=""
-    utils::write.table(as.data.frame(out.file), file = file.path(outputPath, "combined.txt"),sep="", 
-                row.names = FALSE, qmethod = "double",fileEncoding="windows-1252") 
-
+    setwd("..")
   }
-  return(outputPath) # returns the location of the output for reference in addFeatures and for any other purpose
+  setwd(currdir)
 }
-#findFeatures(outputPath, fcsv, exclusionVars)
-
-#' @title addFeatures
-#' @description Use the results of findFeatures to append promising features to a dataframe for further testing
-#' @param df A dataframe
-#' @param path A string
-#' @param prefix A list of trees generated by saveTree
-#' @return A dataframe with extra features appended
-#' @keywords addFeatures
-#' @export 
-#' @name addFeatures
-#' @examples
-#' 
-#' require(featurefinder)
-#' data(futuresdata)
-#' data=futuresdata
-#' data$SMIfactor=paste("smi",as.matrix(data$SMIfactor),sep="")
-#' n=length(data$DAX)
-#' nn=floor(length(data$DAX)/2)
-#' 
-#' # Can we predict the relative movement of DAX and SMI?
-#' data$y=data$DAX*0 # initialise the target to 0
-#' data$y[1:(n-1)]=((data$DAX[2:n])-(data$DAX[1:(n-1)]))/
-#'   (data$DAX[1:(n-1)])-(data$SMI[2:n]-(data$SMI[1:(n-1)]))/(data$SMI[1:(n-1)])
-#' 
-#' # Fit a simple model
-#' thismodel=lm(formula=y ~ .,data=data)
-#' expected=predict(thismodel,data)
-#' actual=data$y
-#' residual=actual-expected
-#' data=cbind(data,expected, actual, residual)
-#' 
-#' CSVPath=tempdir()
-#' fcsv=paste(CSVPath,"/futuresdata.csv",sep="")
-#' write.csv(data[(nn+1):(length(data$y)),],file=fcsv,row.names=FALSE)
-
-#' exclusionVars="\"residual\",\"expected\", \"actual\",\"y\""
-#' factorToNumericList=c()
-#' 
-#' # Now the dataset is prepared, try to find new features
-#' tempDir=findFeatures(outputPath="NoPath", fcsv, exclusionVars,
-#' factorToNumericList,                     
-#' treeGenerationMinBucket=50,
-#' treeSummaryMinBucket=20,
-#' useSubDir=FALSE)  
-#'          
-#' newfeat1=((data$SMIfactor==0) & (data$CAC < 2253) & (data$CAC< 1998) & (data$CAC>=1882)) * 1.0
-#' newfeat2=((data$SMIfactor==1) & (data$SMI < 7837) & (data$SMI >= 7499)) * 1.0
-#' newfeatures=cbind(newfeat1, newfeat2) # create columns for the newly found features
-#' datanew=cbind(data,newfeatures)
-#' thismodel=lm(formula=y ~ .,data=datanew)
-#' expectednew=predict(thismodel,datanew)
-#' 
-#' requireNamespace("Metrics")
-#' OriginalRMSE = Metrics::rmse(data$y,expected)
-#' NewRMSE = Metrics::rmse(data$y,expectednew)
-#' 
-#' print(paste("OriginalRMSE = ",OriginalRMSE))
-#' print(paste("NewRMSE = ",NewRMSE))
-#' 
-#' # Append new features to a dataframe automatically
-#' dataWithNewFeatures = addFeatures(df=data, path=tempDir, prefix="auto_")
-#' head(df)
-addFeatures <- function(df, path, prefix) {
-  if (substr(path, nchar(path), nchar(path)) != "/") { path <- paste0(path, "/") }
-  txtfiles <- list.files(path, pattern = "*.txt", all.files = FALSE, full.names = FALSE,
-                         recursive = FALSE, ignore.case = TRUE, include.dirs = FALSE, no.. = TRUE)
-  rules <- c()
-  for (txtfile in txtfiles) {
-    # txtfile <- txtfiles[3]
-    data <- utils::read.csv(paste0(path, txtfile), header = FALSE, sep = "\n", stringsAsFactors = FALSE)
-    RESrows <- data.frame(RESrows = data[substr(data[,1], 1, 8) == "RESIDUAL", ], stringsAsFactors = FALSE)
-    if (nrow(RESrows) > 0) {
-      for (i in 1:nrow(RESrows)) {
-        RESrow <- unlist(strsplit(as.character(RESrows[i, ]), ","))
-        if (is.null(RESrow)) {
-          rule <- "(none)"
-        } else {
-          rule <- ""
-          if (RESrow[1] != "RESIDUAL: ALL") {
-            rule <- paste0("df$", substr(RESrow[1], 11, nchar(RESrow[1])), " == '", RESrow[2], "'")
-          }
-          if (RESrow[10] != "NA and root") {
-            rule <- ifelse(rule == "", paste0("df$", RESrow[10]), paste0(rule, " & df$", RESrow[10]))
-            rule <- gsub("==", "_EqEq_", rule)
-            rule <- gsub(">=", "_GTE_", rule)
-            rule <- gsub("<=", "_LTE_", rule)
-            rule <- gsub(" and ", paste0(" & df$"), rule)
-            if (!identical(grep("=", rule), integer(0))) {
-              rule <- paste0(gsub("=", " %in% c('", rule), "'")
-            }
-            if (length(RESrow) > 10) {
-              rule <- paste0(rule, ",'", paste(RESrow[11:length(RESrow)], collapse = "','"), "')")
-            }
-          }
-          rule <- gsub("_EqEq_", "==", rule)
-          rule <- gsub("_GTE_", ">=", rule)
-          rule <- gsub("_LTE_", "<=", rule)
-          rule <- ifelse(rule == "", "(none)", rule)
-        }
-        rules <- unique(c(rules, rule))
-      }
-    } else {
-      rule <- "(none)"
-    }
-    rules <- unique(c(rules, rule))
-  }
-  rules <- rules[rules != "(none)"]
-  if (!(identical(rules, character(0)))) {
-    digits <- trunc(log10(length(rules)) + 1)
-    candidatefeatnames <- paste0(prefix, "feat", sprintf(paste0("%0", digits, "d"), 1:length(rules)))
-    if (any(candidatefeatnames %in% names(df))) {
-      cat(paste0("Warning: '", paste0(candidatefeatnames[candidatefeatnames %in% names(df)], collapse = "','"), "' already exist in your data.\n",
-                 "No new features were added. Please select a different prefix."))
-    } else {
-      cat("These", length(rules), "new feature(s) were added to your data ('df'):\n")
-      for (i in 1:length(rules)) {
-        newfeat <- paste0("df$", candidatefeatnames[i], " <- as.numeric(", rules[i], ")")
-        print(newfeat)        
-        eval(parse(text = newfeat))
-        cat(newfeat, "\n")
-      }
-    }
-  }
-  return(df)
-}  # End addFeatures function
-
-
-#' @title futuresdata
-#' @description Sample futures data based on dataset EuStockMarkets in the datasets package. 
-#' @docType data
-#' @keywords futuresdata
-#' @name futuresdata
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format A data frame with 1860 rows and 4 variables
-#' @source \url{stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html}
-#' @examples
-#' data(futuresdata)
-#' head(futuresdata)
-NULL
-
-#' @title mpgdata
-#' @description Sample car data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords mpgdata
-#' @name mpgdata
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format A data frame with 234 rows and 11 variables
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(mpgdata)
-#' head(mpgdata)
-NULL
-
-#' @title dat
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords dat
-#' @name dat
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format A data frame with 234 rows and 11 variables
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(dat)
-#' head(dat)
-NULL
-
-#' @title dat0
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords dat0
-#' @name dat0
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format A data frame with 234 rows and 11 variables
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(dat0)
-#' head(dat0)
-NULL
+#findFeatures(OutputPath, fcsv, ExclusionVars)
 
 #' @title data
-#' @description Sample data based on dataset mpg in the ggplot2 package
+#' @description Sample data based on dataset EuStockMarkets in the datasets package. 
 #' @docType data
-#' @keywords data
+#' @keywords sample data
 #' @name data
 #' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format A data frame with 234 rows and 11 variables
-#' @source \url{ggplot2.org}
+#' @format A data frame with 1860 rows and 4 variables
+#' @source \url{https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html}
 #' @examples
-#' data(data)
-#' head(data)
+#' data(mycsv)
+#' thismodel=lm(formula=DAX ~ .,data=data)
+#' expectedprob=predict(thismodel,data)
+#' actualprob=data$DAX
+#' residual=actualprob-expectedprob
+#' data=cbind(data,expectedprob, actualprob, residual)
 NULL
-
-#' @title doAllFactors
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords doAllFactors
-#' @name doAllFactors
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format A boolean to indicate whether to scan over all categorical factor partitions.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(doAllFactors)
-#' head(doAllFactors)
-NULL
-
-#' @title expr
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords expr
-#' @name expr
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format A string describing the formula defining a leaf node.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(expr)
-#' head(expr)
-NULL
-
-#' @title fileConn
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords fileConn
-#' @name fileConn
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format A text output object.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(fileConn)
-#' head(fileConn)
-NULL
-
-#' @title filename
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords filename
-#' @name filename
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format A filename for output.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(filename)
-#' head(filename)
-NULL
-
-#' @title i
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords i
-#' @name i
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format An index variable used in examples.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(i)
-#' head(i)
-NULL
-
-#' @title mainfaclevels
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords mainfaclevels
-#' @name mainfaclevels
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format Levels of the main or current factor being scanned.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(mainfaclevels)
-#' head(mainfaclevels)
-NULL
-
-#' @title maxFactorLevels
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords maxFactorLevels
-#' @name maxFactorLevels
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format Maximum allowable number of factor levels before the variable is converted to numeric.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(maxFactorLevels)
-#' head(maxFactorLevels)
-NULL
-
-#' @title names
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords names
-#' @name names
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format A list of variable names used in examples.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(names)
-#' head(names)
-NULL
-
-#' @title pathterms
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords pathterms
-#' @name pathterms
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format A string defining a leaf node formula.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(pathterms)
-#' head(pathterms)
-NULL
-
-#' @title runname
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords runname
-#' @name runname
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format A string corresponding to the name of the variable being modelled
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(runname)
-#' head(runname)
-NULL
-
-#' @title splitlist
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords splitlist
-#' @name splitlist
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format Sample list of node split formulae.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(splitlist)
-#' head(splitlist)
-NULL
-
-#' @title t
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords t
-#' @name t
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format A sample tree.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(t)
-#' head(t)
-NULL
-
-#' @title tree
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords tree
-#' @name tree
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format A sample tree object.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(tree)
-#' head(tree)
-NULL
-
-#' @title treeGenerationMinBucket
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords treeGenerationMinBucket
-#' @name treeGenerationMinBucket
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format Minimum number of data points per leaf allowed in tree generation.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(treeGenerationMinBucket)
-#' head(treeGenerationMinBucket)
-NULL
-
-#' @title treeSummaryMinBucket
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords treeSummaryMinBucket
-#' @name treeSummaryMinBucket
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format Minimum number of data points per leaf allowed in tree summary.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(treeSummaryMinBucket)
-#' head(treeSummaryMinBucket)
-NULL
-
-#' @title treeSummaryResidualMagnitudeThreshold
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords treeSummaryResidualMagnitudeThreshold
-#' @name treeSummaryResidualMagnitudeThreshold
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format Minimum allowed residual magnitude in leaf summary generation.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(treeSummaryResidualMagnitudeThreshold)
-#' head(treeSummaryResidualMagnitudeThreshold)
-NULL
-
-#' @title treeSummaryResidualThreshold
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords treeSummaryResidualThreshold
-#' @name treeSummaryResidualThreshold
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format Minimum allowed residual value in leaf summary generation.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(treeSummaryResidualThreshold)
-#' head(treeSummaryResidualThreshold)
-NULL
-
-#' @title trees
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords trees
-#' @name trees
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format Sample tree set.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(trees)
-#' head(trees)
-NULL
-
-#' @title treesAll
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords treesAll
-#' @name treesAll
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format Full dataset tree example.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(treesAll)
-#' head(treesAll)
-NULL
-
-#' @title vars
-#' @description Sample data based on dataset mpg in the ggplot2 package
-#' @docType data
-#' @keywords vars
-#' @name vars
-#' @author Richard Davis \email{richard.davis@cba.com.au}
-#' @format List of predictor variables.
-#' @source \url{ggplot2.org}
-#' @examples
-#' data(vars)
-#' head(vars)
-NULL
-
-
-
-  
-  
-  
-  
-  
-  

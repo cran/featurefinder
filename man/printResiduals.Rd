@@ -4,9 +4,17 @@
 \alias{printResiduals}
 \title{printResiduals}
 \usage{
-printResiduals(fileConn, all, dat, runname, levelname,
-  treeSummaryResidualThreshold, treeSummaryMinBucket,
-  treeSummaryResidualMagnitudeThreshold, ...)
+printResiduals(
+  fileConn,
+  all,
+  dat,
+  runname,
+  levelname,
+  treeSummaryResidualThreshold,
+  treeSummaryMinBucket,
+  treeSummaryResidualMagnitudeThreshold,
+  ...
+)
 }
 \arguments{
 \item{fileConn}{A file connection}
@@ -32,13 +40,5 @@ Residuals are printed and also saved in a simplified format.
 }
 \description{
 This function generates a residual tree on a subset of the data
-}
-\examples{
-
-require(featurefinder)
-data(examples)
-printResiduals(fileConn,splitlist[t][[1]],dat, runname, names[t],
-  treeSummaryResidualThreshold,treeSummaryMinBucket,
-  treeSummaryResidualMagnitudeThreshold)
 }
 \keyword{saveTree}

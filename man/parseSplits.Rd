@@ -15,10 +15,4 @@ A list of parsed splits.
 \description{
 Extract information relating to the paths and volume of data in the leaves of the tree
 }
-\examples{
-
-require(featurefinder)
-data(examples)
-parseSplits(treesAll[[1]][[2]])
-}
 \keyword{saveTree}

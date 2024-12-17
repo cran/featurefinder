@@ -25,16 +25,4 @@ A list of residuals for each tree provided.
 \description{
 For each tree print a summary of the significant residuals as specified by the user
 }
-\examples{
-
-require(featurefinder)
-data(examples)
-generateResidualCutoffCode(data=dat0,"treesAll.txt",treesAll,mainfaclevels, runname,
-  treeGenerationMinBucket=treeGenerationMinBucket,
-  treeSummaryMinBucket=treeSummaryMinBucket,
-  treeSummaryResidualThreshold=treeSummaryResidualThreshold,
-  treeSummaryResidualMagnitudeThreshold=treeSummaryResidualMagnitudeThreshold,
-  doAllFactors=doAllFactors,
-  maxFactorLevels=maxFactorLevels)
-}
 \keyword{saveTree}
